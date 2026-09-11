@@ -152,7 +152,7 @@ export default function RoomPage() {
               className="text-input"
               value={joinName}
               onChange={(e) => setJoinName(e.target.value)}
-              placeholder="Ex. Sacha"
+              placeholder="Ex. Koami"
               maxLength={24}
             />
             <button

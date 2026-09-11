@@ -82,7 +82,7 @@ export default function HomePage() {
             <input
               id="create-name"
               className="text-input"
-              placeholder="Ex. Léa"
+              placeholder="Ex. Koami"
               value={createName}
               onChange={(e) => setCreateName(e.target.value)}
               maxLength={24}
@@ -112,7 +112,7 @@ export default function HomePage() {
             <input
               id="join-name"
               className="text-input"
-              placeholder="Ex. Sacha"
+              placeholder="Ex. Emma"
               value={joinName}
               onChange={(e) => setJoinName(e.target.value)}
               maxLength={24}

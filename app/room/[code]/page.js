@@ -22,6 +22,10 @@ export default function RoomPage() {
   const [selectedGuess, setSelectedGuess] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [ownCustomMode, setOwnCustomMode] = useState(false);
+  const [ownCustomText, setOwnCustomText] = useState("");
+  const [guessCustomMode, setGuessCustomMode] = useState(false);
+  const [guessCustomText, setGuessCustomText] = useState("");
 
   const lastIndexRef = useRef(-1);
 
@@ -64,6 +68,10 @@ export default function RoomPage() {
       lastIndexRef.current = state.currentIndex;
       setSelectedOwn(null);
       setSelectedGuess(null);
+      setOwnCustomMode(false);
+      setOwnCustomText("");
+      setGuessCustomMode(false);
+      setGuessCustomText("");
     }
   }, [state?.currentIndex]);
 
@@ -313,14 +321,40 @@ export default function RoomPage() {
                   {question.options.map((opt) => (
                     <button
                       key={opt}
-                      className={`option-btn ${own === opt ? "selected" : ""}`}
+                      className={`option-btn ${!ownCustomMode && own === opt ? "selected" : ""}`}
                       disabled={iSubmitted}
-                      onClick={() => setSelectedOwn(opt)}
+                      onClick={() => {
+                        setOwnCustomMode(false);
+                        setSelectedOwn(opt);
+                      }}
                     >
                       {opt}
                     </button>
                   ))}
+                  <button
+                    className={`option-btn ${ownCustomMode ? "selected" : ""}`}
+                    disabled={iSubmitted}
+                    onClick={() => {
+                      setOwnCustomMode(true);
+                      setSelectedOwn(ownCustomText || "");
+                    }}
+                  >
+                    Autre…
+                  </button>
                 </div>
+                {ownCustomMode && !iSubmitted && (
+                  <input
+                    className="text-input"
+                    style={{ marginTop: 10 }}
+                    placeholder="Écris ta réponse"
+                    maxLength={40}
+                    value={ownCustomText}
+                    onChange={(e) => {
+                      setOwnCustomText(e.target.value);
+                      setSelectedOwn(e.target.value);
+                    }}
+                  />
+                )}
               </div>
 
               <div className="answer-block">
@@ -331,14 +365,40 @@ export default function RoomPage() {
                   {question.options.map((opt) => (
                     <button
                       key={opt}
-                      className={`option-btn guess ${guess === opt ? "selected guess" : ""}`}
+                      className={`option-btn guess ${!guessCustomMode && guess === opt ? "selected guess" : ""}`}
                       disabled={iSubmitted}
-                      onClick={() => setSelectedGuess(opt)}
+                      onClick={() => {
+                        setGuessCustomMode(false);
+                        setSelectedGuess(opt);
+                      }}
                     >
                       {opt}
                     </button>
                   ))}
+                  <button
+                    className={`option-btn guess ${guessCustomMode ? "selected guess" : ""}`}
+                    disabled={iSubmitted}
+                    onClick={() => {
+                      setGuessCustomMode(true);
+                      setSelectedGuess(guessCustomText || "");
+                    }}
+                  >
+                    Autre…
+                  </button>
                 </div>
+                {guessCustomMode && !iSubmitted && (
+                  <input
+                    className="text-input"
+                    style={{ marginTop: 10 }}
+                    placeholder="Écris ta supposition"
+                    maxLength={40}
+                    value={guessCustomText}
+                    onChange={(e) => {
+                      setGuessCustomText(e.target.value);
+                      setSelectedGuess(e.target.value);
+                    }}
+                  />
+                )}
               </div>
 
               {!iSubmitted ? (
